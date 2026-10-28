@@ -3,6 +3,11 @@
   "author": "SomeAuthor",
   "description": "Пример карточки мода. Удалите этот файл, когда добавите настоящие моды.",
   "repo": "octocat/Hello-World",
-  "image": "",
-  "tags": ["example"]
+  "tags": [
+    "example"
+  ],
+  "dependencies": [],
+  "featured": true,
+  "hidden": false,
+  "image": ""
 }
