@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Предложить мод</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top"><h1>Предложить мод</h1><p><a href="index.html">← Ко всем модам</a>. Вход не нужен: заявка попадёт к модераторам и появится на сайте после одобрения.</p></header>
+<main class="wrap">
+<form id="f" class="box">
+  <label>Название<input id="name" maxlength="80" required></label>
+  <label>Автор<input id="author" maxlength="60" required></label>
+  <label>Репозиторий мода на GitHub (user/repo или ссылка)<input id="repo" placeholder="ВашНик/репозиторий-мода" required></label>
+  <label>Описание<textarea id="desc" rows="5" maxlength="1000" required></textarea></label>
+  <label>Картинка мода (PNG или JPG, до 700 КБ)<input id="image" type="file" accept="image/png,image/jpeg"></label>
+  <img id="prev" class="prev" alt="Превью" hidden>
+  <div><label>Требуемые моды (отметьте, если нужны)</label><div class="deps" id="deps">Загрузка…</div></div>
+  <label>Теги через запятую<input id="tags" placeholder="gameplay, ui"></label>
+  <input id="hp" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+  <div id="cf"></div>
+  <p class="hint">Кнопка «Скачать» берёт файл из последнего Release репозитория (первый приложенный файл) — создайте Release с zip. Если релиза нет, скачается архив основной ветки.</p>
+  <div><button id="send">Отправить на модерацию</button></div>
+</form>
+<div id="done" class="box" hidden><h2>Заявка отправлена</h2><p>Спасибо! Модератор проверит мод, и он появится в каталоге.</p><a class="btn" href="index.html">В каталог</a></div>
+</main>
+<script src="config.js"></script>
+<script src="common.js"></script>
+<script>
+let img = null;
+loadMods().then(d => $("#deps").innerHTML = depsBoxes(d)).catch(() => $("#deps").innerHTML = '<span class="hint">Список не загрузился.</span>');
+if (CONFIG.turnstileSiteKey) {
+  const d = document.createElement("div"); d.className = "cf-turnstile"; d.dataset.sitekey = CONFIG.turnstileSiteKey; $("#cf").append(d);
+  const s = document.createElement("script"); s.src = "https://challenges.cloudflare.com/turnstile/v0/api.js"; s.async = true; document.head.append(s);
+}
+$("#image").onchange = async e => {
+  img = null; $("#prev").hidden = true;
+  const f = e.target.files[0]; if (!f) return;
+  try { img = await readImg(f); $("#prev").src = URL.createObjectURL(f); $("#prev").hidden = false; }
+  catch (er) { e.target.value = ""; toast(er.message, true); }
+};
+$("#f").onsubmit = async e => {
+  e.preventDefault(); const b = $("#send"); b.disabled = true;
+  try {
+    const repo = normRepo($("#repo").value);
+    if (!okRepo(repo)) throw Error("Репозиторий должен быть вида user/repo");
+    const r = await fetch(CONFIG.api + "/submit", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({
+      name: $("#name").value, author: $("#author").value, repo, description: $("#desc").value, image: img, hp: $("#hp").value,
+      tags: $("#tags").value.split(","), dependencies: pickedDeps($("#deps")), cf: window.turnstile ? turnstile.getResponse() : "" }) });
+    const d = await r.json().catch(() => ({}));
+    if (!r.ok) throw Error(d.error || "Ошибка " + r.status);
+    $("#f").hidden = true; $("#done").hidden = false;
+  } catch (er) { toast(er.message, true); if (window.turnstile) turnstile.reset(); b.disabled = false; }
+};
+</script>
+</body>
+</html>

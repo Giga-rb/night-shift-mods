@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Моды для Just Another Night Shift</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top">
+  <h1>Just Another Night Shift: моды</h1>
+  <p>Библиотека модов от сообщества. Скачивайте в один клик или предложите свой мод — он появится после проверки модератором.</p>
+</header>
+<div class="bar">
+  <input id="q" type="search" placeholder="Поиск по названию, автору, описанию" aria-label="Поиск">
+  <select id="sort" aria-label="Сортировка">
+    <option value="feat">Сначала рекомендуемые</option>
+    <option value="name">По названию</option>
+    <option value="author">По автору</option>
+  </select>
+  <a class="btn" href="submit.html">Предложить мод</a>
+  <a class="btn ghost" href="admin.html">Модераторам</a>
+</div>
+<div class="bar"><div class="tags" id="tags"></div></div>
+<main class="wrap"><div class="grid" id="grid"><p class="empty">Загрузка…</p></div></main>
+<footer>Just Another Night Shift — неофициальная библиотека модов.</footer>
+<script src="config.js"></script>
+<script src="common.js"></script>
+<script>
+let mods = [], tag = "";
+loadMods().then(d => { mods = d; drawTags(); draw(); })
+  .catch(() => $("#grid").innerHTML = '<p class="empty">Список модов пока не собран. Подождите минуту после первого коммита.</p>');
+function drawTags() {
+  const all = [...new Set(mods.flatMap(m => m.tags || []))].sort();
+  $("#tags").innerHTML = all.map(t => `<button class="tag${t === tag ? " on" : ""}" data-t="${esc(t)}">${esc(t)}</button>`).join("");
+}
+function draw() {
+  const q = $("#q").value.toLowerCase(), s = $("#sort").value;
+  const l = mods.filter(m => (!tag || (m.tags || []).includes(tag)) && [m.name, m.author, m.description].join(" ").toLowerCase().includes(q));
+  if (s !== "feat") l.sort((a, b) => a[s].localeCompare(b[s]));
+  $("#grid").innerHTML = l.length ? l.map(m => `
+    <article class="card${m.featured ? " feat" : ""}">
+      <a class="img" href="mod.html?id=${encodeURIComponent(m.id)}" style="${imgUrl(m) ? `background-image:url('${esc(imgUrl(m))}')` : ""}" aria-label="${esc(m.name)}">${imgUrl(m) ? "" : "[ нет превью ]"}</a>
+      <div class="body">
+        <h3><a href="mod.html?id=${encodeURIComponent(m.id)}">${esc(m.name)}</a></h3>
+        <div class="by">от ${esc(m.author)}${(m.dependencies || []).length ? ` · требует модов: ${m.dependencies.length}` : ""}</div>
+        <p>${esc(m.description)}</p>
+        <div class="tags">${(m.tags || []).map(t => `<span class="pill">${esc(t)}</span>`).join("")}</div>
+        <div class="acts">
+          <button data-dl="${esc(m.id)}">Скачать</button>
+          <a class="btn ghost" href="https://github.com/${esc(m.repo)}" target="_blank" rel="noopener">Репозиторий</a>
+        </div>
+      </div>
+    </article>`).join("") : '<p class="empty">Ничего не найдено.</p>';
+}
+$("#q").oninput = draw; $("#sort").onchange = draw;
+document.addEventListener("click", e => {
+  const t = e.target.closest("[data-t]"); if (t) { tag = tag === t.dataset.t ? "" : t.dataset.t; drawTags(); draw(); }
+  const d = e.target.closest("[data-dl]"); if (d) downloadMod(mods.find(m => m.id === d.dataset.dl), d);
+});
+</script>
+</body>
+</html>

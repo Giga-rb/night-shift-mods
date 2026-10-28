@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Панель модератора</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top"><h1>Панель модератора</h1><p><a href="index.html">← На сайт</a></p></header>
+<main class="wrap">
+<section id="loginBox" class="login">
+  <h2>Вход через GitHub</h2>
+  <p class="hint">Вход разрешён только аккаунтам из списка модераторов. Сайт получает от GitHub лишь ваш логин (права на репозитории не запрашиваются).</p>
+  <button id="go">Войти через GitHub</button>
+  <small id="err" style="color:var(--red)"></small>
+</section>
+<section id="app" hidden>
+  <p>Вы: <b id="me"></b> <span class="pill amber" id="role"></span> <button class="ghost" id="out">Выйти</button></p>
+  <nav class="tabs" id="tabs">
+    <button data-tab="prs" class="on">Заявки</button>
+    <button data-tab="mods">Моды</button>
+    <button data-tab="mdr">Модераторы</button>
+  </nav>
+  <div id="prs"></div>
+  <div id="mods" hidden>
+    <div class="bar" style="padding:0 0 12px"><input id="mq" placeholder="Фильтр по названию или автору"><button id="add">Добавить мод</button></div>
+    <div class="scroll"><table><thead><tr><th>Мод</th><th>Репозиторий</th><th>Статус</th><th></th></tr></thead><tbody id="mrows"></tbody></table></div>
+  </div>
+  <div id="mdr" hidden></div>
+</section>
+</main>
+<dialog id="dlg">
+  <h2 id="dt" style="margin-bottom:12px"></h2>
+  <label>Название<input id="f_name"></label>
+  <label>Автор<input id="f_author"></label>
+  <label>Репозиторий (user/repo)<input id="f_repo"></label>
+  <label>Описание<textarea id="f_desc" rows="4"></textarea></label>
+  <label>Новая картинка (PNG/JPG, до 700 КБ) — оставьте пустым, чтобы не менять<input id="f_img" type="file" accept="image/png,image/jpeg"></label>
+  <label>Требуемые моды<div class="deps" id="f_deps"></div></label>
+  <label>Теги через запятую<input id="f_tags"></label>
+  <label class="chk"><input type="checkbox" id="f_feat"> Рекомендуемый</label>
+  <label class="chk"><input type="checkbox" id="f_hid"> Скрыт с сайта</label>
+  <div class="acts" style="justify-content:flex-end"><button class="ghost" id="cancel">Отмена</button><button id="save">Сохранить</button></div>
+</dialog>
+<script src="config.js"></script>
+<script src="common.js"></script>
+<script src="admin.js"></script>
+</body>
+</html>

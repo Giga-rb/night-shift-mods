@@ -1,0 +1,15 @@
+[
+ {
+  "id": "example-mod",
+  "name": "Example Mod",
+  "author": "SomeAuthor",
+  "description": "Пример карточки мода. Удалите этот файл, когда добавите настоящие моды.",
+  "repo": "octocat/Hello-World",
+  "image": "",
+  "tags": [
+   "example"
+  ],
+  "dependencies": [],
+  "download": ""
+ }
+]

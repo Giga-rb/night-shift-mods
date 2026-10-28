@@ -1,0 +1,13 @@
+name = "night-shift-mods"
+main = "worker.js"
+compatibility_date = "2025-01-01"
+
+[vars]
+OWNER = "YOUR_GITHUB"      # аккаунт, где лежит репозиторий сайта
+REPO = "YOUR_REPO"         # репозиторий сайта
+BRANCH = "main"
+ADMIN = "YOUR_GITHUB"      # главный админ (вы); остальные модераторы — в moderators.json
+SITE_URL = "https://YOUR_GITHUB.github.io/YOUR_REPO"   # без слэша в конце
+CLIENT_ID = "ВСТАВЬТЕ_CLIENT_ID_OAUTH_ПРИЛОЖЕНИЯ"
+
+# Секреты (не в этом файле): wrangler secret put GH_TOKEN / CLIENT_SECRET / TURNSTILE_SECRET (необязательно)

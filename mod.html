@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Мод — Just Another Night Shift</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top"><p><a href="index.html">← Ко всем модам</a></p></header>
+<main class="wrap" id="m"><p class="empty">Загрузка…</p></main>
+<script src="config.js"></script>
+<script src="common.js"></script>
+<script>
+loadMods().then(mods => {
+  const m = mods.find(x => x.id === new URLSearchParams(location.search).get("id"));
+  if (!m) return $("#m").innerHTML = '<p class="empty">Мод не найден. Возможно, он ещё на проверке или был удалён.</p>';
+  document.title = m.name + " — Just Another Night Shift";
+  const deps = (m.dependencies || []).map(id => { const d = mods.find(x => x.id === id);
+    return d ? `<li><a href="mod.html?id=${encodeURIComponent(id)}">${esc(d.name)}</a></li>` : ""; }).join("");
+  $("#m").innerHTML = `<div class="mod">
+    <div class="img" style="${imgUrl(m) ? `background-image:url('${esc(imgUrl(m))}')` : ""}">${imgUrl(m) ? "" : "[ нет превью ]"}</div>
+    <div class="box">
+      <h2>${esc(m.name)}</h2>
+      <div class="by">от ${esc(m.author)}</div>
+      <p>${esc(m.description)}</p>
+      ${deps ? `<div><b>Требуется установить:</b><ul>${deps}</ul></div>` : ""}
+      <div class="tags">${(m.tags || []).map(t => `<span class="pill">${esc(t)}</span>`).join("")}</div>
+      <div class="acts"><button id="dl">Скачать</button>
+      <a class="btn ghost" href="https://github.com/${esc(m.repo)}" target="_blank" rel="noopener">Репозиторий мода</a></div>
+    </div></div>`;
+  $("#dl").onclick = e => downloadMod(m, e.target);
+}).catch(() => $("#m").innerHTML = '<p class="empty">Не удалось загрузить список модов.</p>');
+</script>
+</body>
+</html>
