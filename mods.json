@@ -1,15 +1,18 @@
 [
  {
-  "id": "example-mod",
-  "name": "Example Mod",
-  "author": "SomeAuthor",
-  "description": "Пример карточки мода. Удалите этот файл, когда добавите настоящие моды.",
-  "repo": "octocat/Hello-World",
-  "image": "",
+  "id": "godlok2334-minecraftus-89d3",
+  "name": "Лох",
+  "author": "godlok2334",
+  "description": "ЕСЛИ ЧИТАЕШЬ ЛОШАРА",
+  "repo": "godlok2334/Minecraftus",
   "tags": [
-   "example"
+   "проверка",
+   "шутка"
   ],
   "dependencies": [],
-  "download": "https://github.com/octocat/Hello-World/archive/refs/heads/master.zip"
+  "featured": true,
+  "hidden": false,
+  "image": "images/godlok2334-minecraftus-89d3.png",
+  "download": "https://github.com/godlok2334/Minecraftus/archive/refs/heads/main.zip"
  }
 ]
