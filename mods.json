@@ -1,18 +1,28 @@
 [
  {
-  "id": "godlok2334-minecraftus-89d3",
-  "name": "Лох",
+  "id": "godlok2334-minecraftus-1f4f",
+  "name": "Тест мод",
   "author": "godlok2334",
-  "description": "ЕСЛИ ЧИТАЕШЬ ЛОШАРА",
+  "description": "Описание",
   "repo": "godlok2334/Minecraftus",
   "tags": [
-   "проверка",
-   "шутка"
+   "проверка"
   ],
   "dependencies": [],
-  "featured": true,
-  "hidden": false,
-  "image": "images/godlok2334-minecraftus-89d3.png",
+  "image": "images/godlok2334-minecraftus-1f4f.png",
+  "download": "https://github.com/godlok2334/Minecraftus/archive/refs/heads/main.zip"
+ },
+ {
+  "id": "godlok2334-minecraftus-e144",
+  "name": "Тест мод",
+  "author": "giga",
+  "description": "Просто тест",
+  "repo": "godlok2334/Minecraftus",
+  "tags": [
+   "проверка"
+  ],
+  "dependencies": [],
+  "image": "",
   "download": "https://github.com/godlok2334/Minecraftus/archive/refs/heads/main.zip"
  }
 ]
