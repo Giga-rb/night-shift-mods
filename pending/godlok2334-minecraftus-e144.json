@@ -1,0 +1,13 @@
+{
+  "name": "Тест мод",
+  "author": "giga",
+  "description": "Просто тест",
+  "repo": "godlok2334/Minecraftus",
+  "tags": [
+    "проверка"
+  ],
+  "dependencies": [
+    "godlok2334-minecraftus-89d3"
+  ],
+  "image": ""
+}
